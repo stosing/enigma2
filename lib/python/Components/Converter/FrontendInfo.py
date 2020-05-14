@@ -145,3 +145,13 @@ class FrontendInfo(Converter):
 
 	range = 65535
 	value = property(getValue)
+	
+	if self.source.snr_db is not None:
+				return "%3.02f dB" % (self.source.snr_db / 100.0)
+			elif self.source.snr is not None: #fallback to normal SNR...
+				return "%3.1f dB" % (((self.source.snr / (65536.0 / 100.0)) * 0.1800) - 1.0000)
+		elif self.type == self.TUNER_TYPE:
+			return self.source.frontend_type and self.frontend_type or "Unknown"
+		if percent is None:
+			return "N/A"
+		return "%d %%" % ((percent *100) / 65536)
